@@ -1,3 +1,17 @@
+<?php
+session_start();
+
+if(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']=="true" && isset($_COOKIE['auth']) && $_COOKIE['auth']=="true"){
+	echo "logged in";
+}
+else{
+	header("location: ../index.php");
+}
+
+
+echo $_SESSION['loggedIn'];
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,23 +32,14 @@
 		<nav>
 			<div class="proNav">
 				<ul>
-					<li><h1>My Profile</h1></li>
-					<li><a href="#">My Match</a></li>
-					<li><a href="#">Edit Profile</a></li>
-					<li><a href="#">Change Password</a></li>
-					<li><a href="#">Manage Images</a></li>
-					<li><a href="#">Delete Account</a></li>
-					<li><a href="#">logout</a></li>
+					<li><h1>Profile</h1></li>
+					<li><a href="myProfile.php">My Profile</a></li>
+					<li><a href="myMatch.php">My Match</a></li>
+					<li><a href="editProfile.php">Edit Profile</a></li>
+					<li><a href="changePassword.php">Change Password</a></li>
+					<li><a href="manageImage.php">Manage Images</a></li>
+					<li><a href="deleteAccount.php">Delete Account</a></li>
+					<li><a href="logout.php">logout</a></li>
 				</ul>
 			</div>
 		</nav>
-
-		<article>
-		    <h1>London</h1>
-		    <p>London is the capital city of England. It is the most populous city in the  United Kingdom, with a metropolitan area of over 13 million inhabitants.</p>
-		    <p>Standing on the River Thames, London has been a major settlement for two millennia, its history going back to its founding by the Romans, who named it Londinium.</p>
-		</article>
-	</section>
-
-</body>
-</html>

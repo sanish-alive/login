@@ -1,12 +1,23 @@
+<?php
+$finvalid = "";
+$linvalid = "";
+$einvalid = "";
+$pinvalid = "";
+$ginvalid = "";
+$hinvalid = "";
+require $_SERVER['DOCUMENT_ROOT']."/login/controller/formvalidate.php";
+
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <title>Register Form</title>
-    <link rel="stylesheet" href="registration.css">
+    <link rel="stylesheet" href="css/registration.css">
   </head>
   <body>
-    <form class="signup-form" action="profile.php" method="post" enctype="multipart/form-data">
+    <form class="signup-form" action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
 
       <!-- form header -->
       <div class="form-header">
@@ -19,50 +30,45 @@
         <!-- Firstname and Lastname -->
         <div class="horizontal-group">
           <div class="form-group left">
-            <label for="firstname" class="label-title">First name *</label>
+            <label for="firstname" class="label-title">First name *</label><span style="color: red"><?php echo $finvalid; ?></span>
             <input type="text" id="firstname" name="firstname" class="form-input" placeholder="Enter your first name" required="required" />
           </div>
           <div class="form-group right">
-            <label for="lastname" class="label-title">Last name</label>
+            <label for="lastname" class="label-title">Last name</label><span style="color: red"><?php echo $linvalid; ?></span>
             <input type="text" id="lastname" name="lastname" class="form-input" placeholder="Enter your last name" />
           </div>
         </div>
 
         <!-- Email -->
         <div class="form-group">
-          <label for="email" class="label-title">Email*</label>
+          <label for="email" class="label-title">Email*</label><span style="color: red"><?php echo $einvalid; ?></span>
           <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email" required="required">
         </div>
 
         <!-- Passwrod and confirm password -->
         <div class="horizontal-group">
           <div class="form-group left">
-            <label for="password" class="label-title">Password *</label>
+            <label for="password" class="label-title">Password *</label><span style="color: red"><?php echo $pinvalid; ?></span>
             <input type="password" name="pass" id="password" class="form-input" placeholder="enter your password" required="required">
           </div>
           <div class="form-group right">
             <label for="confirm-password" class="label-title">Confirm Password *</label>
-            <input type="password" class="form-input" id="confirm-password" placeholder="enter your password again" required="required">
+            <input type="password" name="cpass" class="form-input" id="confirm-password" placeholder="enter your password again" required="required">
           </div>
         </div>
 
-        <!-- Gender and Hobbies -->
+        <!-- Gender and Height -->
         <div class="horizontal-group">
           <div class="form-group left">
-            <label class="label-title">Gender:</label>
+            <label class="label-title">Gender:</label><span style="color: red"><?php echo $ginvalid; ?></span>
             <div class="input-group">
-              <label for="male"><input type="radio" name="gender" value="male" id="male"> Male</label>
-              <label for="female"><input type="radio" name="gender" value="female" id="female"> Female</label>
+              <label for="male"><input type="radio" name="gender" value="Male" id="male" checked> Male</label>
+              <label for="female"><input type="radio" name="gender" value="Female" id="female"> Female</label>
             </div>
           </div>
           <div class="form-group right">
-            <label class="label-title">Hobbies</label>
-            <div >
-              <label><input type="checkbox" value="music">Music</label>
-              <label><input type="checkbox" value="sport">Sports</label>
-              <label><input type="checkbox" value="travel">Travel</label>
-              <label><input type="checkbox" value="movies">Movies</label>
-            </div>
+            <label for="experience" class="label-title">Height(in cm)</label><span style="color: red"><?php echo $hinvalid; ?></span>
+            <input type="text" name="height"  class="form-input">
           </div>
         </div>
 

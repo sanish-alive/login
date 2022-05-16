@@ -1,10 +1,99 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT']."/login/controller/userAuth.php";
+require_once  $_SERVER['DOCUMENT_ROOT']."/login/db_base/insertData.php";
+require_once  $_SERVER['DOCUMENT_ROOT']."/login/db_base/extractData.php";
+
+session_start();
+
+
+
+if(isset($_COOKIE['auth']) && $_COOKIE['auth']=="true" && isset($_COOKIE['email']) && $_COOKIE['oldSession']){
+	$old_session_id = $_COOKIE['oldSession'];
+	if($_COOKIE['PHPSESSID'] == $_COOKIE['oldSession']){
+		$email = $_COOKIE['email'];
+		$b = new UserAuthentication();
+		if($b->sessionAuth($old_session_id, $email)){
+			$_SESSION['loggedIn'] = "true";
+			$_SESSION['email'] = $email;
+			$_SESSION['id'] = session_id();
+			$g = new InsertData();
+			$g->insertNewSession(session_id(), $email);
+			$h = new ExtractData();
+			$data = $h->extAll($email);
+			$_SESSION['loggedIn'] = "true";
+			$_SESSION['email'] = $email;
+			$_SESSION['id'] = session_id();
+			$_SESSION['firstname'] = $data['firstname'];
+			$_SESSION['lastname'] = $data['lastname'];
+			$_SESSION['gender'] = $data['gender'];
+			$_SESSION['height'] = $data['height'];
+			$_SESSION['bio'] = $data['bio'];
+			$_SESSION['age'] = $data['age'];
+			$_SESSION['profileImg'] = $data['profileImg'];
+			setcookie('auth', 'true', time()+3000);
+			setcookie('email',$email,time()+3000);
+			setcookie('oldSession',session_id(), time()+3000);
+			header("location: templates/myProfile.php");
+		}
+	}
+}
+
+
+
+
+
+
+
+if($_SERVER["REQUEST_METHOD"]=="POST"){
+	if(isset($_POST['submit'])){
+		$email = $_POST['email'];
+		$pwd = $_POST['pass'];
+		$a = new UserAuthentication();
+		if($a->loginAuth($email, $pwd)){
+			$f = new InsertData();
+			$f->insertNewSession(session_id(), $email);
+			$g = new ExtractData();
+			$data = $g->extAll($email);
+			$_SESSION['loggedIn'] = true;
+			$_SESSION['email'] = $email;
+			$_SESSION['id'] = session_id();
+			$_SESSION['firstname'] = $data['firstname'];
+			$_SESSION['lastname'] = $data['lastname'];
+			$_SESSION['gender'] = $data['gender'];
+			$_SESSION['height'] = $data['height'];
+			$_SESSION['bio'] = $data['bio'];
+			$_SESSION['age'] = $data['age'];
+			$_SESSION['profileImg'] = $data['profileImg'];
+			setcookie('auth', 'true', time()+3000);
+			setcookie('email',$email,time()+3000);
+			setcookie('oldSession',session_id(), time()+3000);
+			header("location: templates/myProfile.php");
+
+		}
+		else{
+			echo "<script>alert('Invalid Input')</script>";
+		}
+
+	}
+}
+
+
+
+#echo session_id();
+
+#echo $_COOKIE['PHPSESSID'];
+
+
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Login</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="templates/css/style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
@@ -19,7 +108,7 @@
 		<div class="contentBx">
 			<div class="formBx">
 				<h2>Login</h2>
-				<form action="feed.php" method="post">
+				<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
 					<div class="inputBx">
 						<span>Email</span>
 						<input type="email" name="email">
@@ -35,7 +124,7 @@
 						<input type="submit" value="Sign In" name="submit">
 					</div>
 					<div class="inputBx">
-						<p>Don't have an account? <a href="registrate.php">Sign up</a></p>
+						<p>Don't have an account? <a href="templates/registrate.php">Sign up</a></p>
 					</div>
 				</form>
 				<h3>Vist Our Social Media</h3>

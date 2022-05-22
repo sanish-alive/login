@@ -3,7 +3,7 @@ require "profile.php";
 
 
 if(isset($_POST['logout'])){
-	session_destroy();
+	session_unset();
 	session_destroy();
 	setcookie("auth", null, time()-86400, "/login", "");
 	setcookie('email', null, time()-86400, "/login", "");

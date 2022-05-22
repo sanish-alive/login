@@ -1,6 +1,7 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT']."/login/db_base/connect-db.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/login/db_base/extractData.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/login/db_base/insertData.php";
 
 if($_SERVER["REQUEST_METHOD"]=="POST"){
 	if(isset($_POST["submit"])){
@@ -58,13 +59,13 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 
 
 		if($error==0){
-			$temp = explode(".", $_FILES["file"]["name"]);
+		$temp = explode(".", $_FILES["file"]["name"]);
 		$newfilename = round(microtime(true)).".".end($temp);
 		move_uploaded_file($_FILES["file"]["tmp_name"], "../uploads/" . $newfilename);
 
-		$query = "INSERT INTO user_tb (firstname, lastname, email, pass, gender, height, age, bio, profileImg) VALUES ('$firstname', '$lastname', '$email', '$pwd', '$gender', '$height', '$age', '$bio', '$newfilename')";
+		$b = new InsertData();
 
-		if(mysqli_query($conn, $query)){
+		if($b->insertRegisration($firstname, $lastname, $email, $pwd, $gender, $age, $height, $bio, $newfilename)){
 			header("location: ../index.php");
 		}
 		else{

@@ -28,7 +28,7 @@ require "profile.php"
 			    		</tr>
 			    		<tr>
 			    			<td>Height:</td>
-			    			<td><?php echo $_SESSION['height']."ft"; ?></td>
+			    			<td><?php echo $_SESSION['height']." cm"; ?></td>
 			    		</tr>
 			    		<tr>
 			    			<td>Bio:</td>

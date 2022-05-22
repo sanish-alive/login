@@ -21,7 +21,8 @@ if(isset($_COOKIE['auth']) && $_COOKIE['auth']=="true" && isset($_COOKIE['email'
 			$h = new ExtractData();
 			$data = $h->extAll($email);
 			$_SESSION['loggedIn'] = "true";
-			$_SESSION['email'] = $email;
+			$_SESSION['userid'] = $data['userid'];
+			$_SESSION['email'] = $data['email'];
 			$_SESSION['id'] = session_id();
 			$_SESSION['firstname'] = $data['firstname'];
 			$_SESSION['lastname'] = $data['lastname'];
@@ -30,6 +31,7 @@ if(isset($_COOKIE['auth']) && $_COOKIE['auth']=="true" && isset($_COOKIE['email'
 			$_SESSION['bio'] = $data['bio'];
 			$_SESSION['age'] = $data['age'];
 			$_SESSION['profileImg'] = $data['profileImg'];
+			$_SESSION['alreadyvisited'] = $data['alreadyvisited'];
 			setcookie('auth', 'true', time()+3000);
 			setcookie('email',$email,time()+3000);
 			setcookie('oldSession',session_id(), time()+3000);
@@ -55,6 +57,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 			$g = new ExtractData();
 			$data = $g->extAll($email);
 			$_SESSION['loggedIn'] = true;
+			$_SESSION['userid'] = $data['userid'];
 			$_SESSION['email'] = $email;
 			$_SESSION['id'] = session_id();
 			$_SESSION['firstname'] = $data['firstname'];
@@ -64,6 +67,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 			$_SESSION['bio'] = $data['bio'];
 			$_SESSION['age'] = $data['age'];
 			$_SESSION['profileImg'] = $data['profileImg'];
+			$_SESSION['alreadyvisited'] = $data['alreadyvisited'];
 			setcookie('auth', 'true', time()+3000);
 			setcookie('email',$email,time()+3000);
 			setcookie('oldSession',session_id(), time()+3000);

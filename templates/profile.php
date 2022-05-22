@@ -1,10 +1,7 @@
 <?php
 session_start();
 
-if(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']=="true" && isset($_COOKIE['auth']) && $_COOKIE['auth']=="true"){
-	echo "logged in";
-}
-else{
+if(!isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']!="true" && !isset($_COOKIE['auth']) && $_COOKIE['auth']!="true"){
 	header("location: ../index.php");
 }
 
@@ -24,8 +21,8 @@ echo $_SESSION['loggedIn'];
 	<!-- navigation bar -->
 	<div class="navbar">
 		<a id="navlogo" href="">Cupid</a>
-		<a href="#">Feed</a>
-		<a idhref="#">Profile</a>
+		<a href="feed.php">Feed</a>
+		<a href="myProfile.php">Profile</a>
 	</div>
 
 	<section>

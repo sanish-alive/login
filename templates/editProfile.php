@@ -3,6 +3,14 @@ require "profile.php";
 require $_SERVER['DOCUMENT_ROOT']."/login/db_base/connect-db.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/login/db_base/extractData.php";
 
+require_once $_SERVER['DOCUMENT_ROOT']."/login/db_base/insertData.php";
+
+$finvalid = "";
+$linvalid = "";
+$einvalid = "";
+$pinvalid = "";
+$ginvalid = "";
+$hinvalid = "";
 
 if($_SERVER["REQUEST_METHOD"]=="POST"){
 	if(isset($_POST['submit'])){
@@ -17,48 +25,51 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 
 
 		if(!preg_match("/^([a-zA-Z' ]+)$/", $firstname)){
-			$finvalid = "Invalid First name";
+			$finvalid = "Invalid";
 			$error = 1;
 
 		}
 
 		if(!preg_match("/^([a-zA-Z\.' ]+)$/", $lastname)){
-			$linvalid = "Invalid Last name";
-			$error = 1;
+			$linvalid = "Invalid";
+			$error = 2;
 		}
 
 
 
 		if(!preg_match("/^\\S+@\\S+\\.\\S+$/", $email)){
-			$einvalid = "Invalid Email";
-			$error = 1;
+			$einvalid = "Invalid";
+			$error = 3;
 		}
 
-		$a = new ExtractData();
-		if($a->extEmail($email)){
-			$einvalid = "Already exist";
-			$error = 1;
+		
+		if($_SESSION['email']!=$email){
+			$a = new ExtractData();
+			if($a->extEmail($email)){
+				$einvalid = "Already exist";
+				$error = 4;
+			}
 		}
+		
 
-		if(!isset($gender)){
-			$ginvalid = "select gender";
-			$error = 1;
-		}
 
 		if(!preg_match("/^[0-9]+$/", $height)){
-			$hinvalid = "Invalid Height";
-			$error = 1;
+			$hinvalid = "Invalid";
+			$error = 6;
 		}
 
 
 		if($error==0){
-			$query = "UPDATE user_tb SET firstname='$firstname', lastname='$lastname', email='$email', height='$height', age='$age', bio='$bio' WHERE oldSession=session_id()";
 
-			if(mysqli_query($conn, $quer)){
+			$tempemail = $_SESSION['email'];
+
+			$b = new InsertData();
+			
+
+			if($b->insertEditProfile($tempemail, $firstname, $lastname, $email, $age, $height, $bio)){
 				$_SESSION['email'] = $email;
 				$_SESSION['firstname'] = $firstname;
 				$_SESSION['lastname'] = $lastname;
-				$_SESSION['gender'] = $gender;
 				$_SESSION['height'] = $height;
 				$_SESSION['bio'] = $bio;
 				$_SESSION['age'] = $age;
@@ -66,31 +77,30 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 				echo "<script>alert('Edit successful')</script>";
 				header("location: ../templates/myProfile.php");
 			}
-		}
 
+		}
 
 	}
 }
-
 ?>
 
 <article>
 	<div class="edit_profile">
 		<h1>Edit Profile</h1>
-		<img src="R.jpg" alt="Avatar"><br>
+		<img id="editimg" src="../uploads/<?php echo $_SESSION['profileImg']; ?>" alt="Avatar"><br>
 		<button style="color: #ff4584">Change profile picture</button>
 		<form action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
 			<table>
 				<tr>
-					<td>First Name:</td>
+					<td>First Name:<span style="color: red"><?php echo $finvalid; ?></span></td>
 					<td><input type="text" name="fname" value="<?php echo $_SESSION['firstname']; ?>"></td>
 				</tr>
 				<tr>
-					<td>Last Name:</td>
+					<td>Last Name:<span style="color: red"><?php echo $linvalid; ?></span></td>
 					<td><input type="text" name="lname" value="<?php echo $_SESSION['lastname']; ?>"></td>
 				</tr>
 				<tr>
-					<td>Email:</td>
+					<td>Email:<span style="color: red"><?php echo $einvalid; ?></span></td>
 					<td><input type="text" name="email" value="<?php echo $_SESSION['email']; ?>"></td>
 				</tr>
 				<tr>
@@ -98,7 +108,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 					<td><input type="text" name="age" value="<?php echo $_SESSION['age']; ?>"></td>
 				</tr>
 				<tr>
-					<td>height:</td>
+					<td>height:<span style="color: red"><?php echo $hinvalid; ?></span></td>
 					<td><input type="text" name="height" value="<?php echo $_SESSION['height']; ?>"></td>
 				</tr>
 				<tr>

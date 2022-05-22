@@ -7,6 +7,8 @@ require_once $_SERVER['DOCUMENT_ROOT']."/login/db_base/connect-db.php";
 class ExtractData{
 	/*This class will extract data from database.*/
 
+	
+
 	function extAll($email){
 		/* this function all data stored in database*/
 
@@ -27,6 +29,7 @@ class ExtractData{
 		$retval = mysqli_query($conn, $query);
 		$data = mysqli_fetch_array($retval);
 		return $data;
+
 	}
 
 
@@ -42,6 +45,18 @@ class ExtractData{
 		if($data){
 			return $data;
 		}
+	}
+
+
+	function extUserId($email){
+
+		global $conn;
+
+		$query = "SELECT userid FROM user_tb WHERE email='$email'";
+		$retval = mysqli_query($conn, $query);
+		$data = mysqli_fetch_array($retval);
+		return $data['userid'];
+
 	}
 
 	function extEmail($email){
@@ -60,9 +75,55 @@ class ExtractData{
 
 	}
 
+	function extAlreadyVisited($email){
+
+		/*this function will extract alreadyvisited user*/
+
+		global $conn;
+
+		$query = "SELECT alreadyvisited FROM user_tb WHERE email='$email'";
+
+
+
+		$retval = mysqli_query($conn, $query);
+
+		$data = mysqli_fetch_array($retval);
+		return $data;
+
+	}
+
+
+	function extImages($user_id){
+		/* this function will extract images */
+		global $conn;
+
+		$query = "SELECT userid, image1, image2, image3, image4, image5 FROM user_img WHERE userid = '$user_id'";
+
+		$retval = mysqli_query($conn, $query);
+
+		$data = mysqli_fetch_array($retval);
+
+		return $data;
+	}
+
+
+	function extFeed($opgender, $wantvisit){
+		/* this function is provided to show in feed section*/
+
+		global $conn;
+
+		$query = "SELECT firstname, lastname, age, gender, height, bio, userid FROM user_tb WHERE gender='$opgender' AND userid='$wantvisit'";
+
+
+		$retval = mysqli_query($conn, $query);
+
+		$data = mysqli_fetch_array($retval);
+
+		return $data;
+
+	}
+
 }
-
-
 
 
 

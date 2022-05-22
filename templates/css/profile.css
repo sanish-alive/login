@@ -15,6 +15,7 @@ h1{
 
 
 .navbar{
+	position: fixed;
 	overflow: hidden;
 	background-color: #ff4584;
 	top: 0;
@@ -26,13 +27,15 @@ h1{
 	display: block;
 	color: white;
 	text-align: center;
+	font-weight: bold;
 	padding: 14px 30px;
 	text-decoration: none;
-	font-size: 16px;
+	font-size: 19px;
+	transition: 0.3s;
 }
 
 .navbar a:hover{
-	background-color: #7762aa;
+	color: #7762aa;
 }
 
 #navlogo{
@@ -47,6 +50,7 @@ section{
 }
 
 nav{
+	position: ;
 	-webkit-flex: 1;
 	-ms-flex: 1;
 	height: 100%;
@@ -216,65 +220,28 @@ article{
 
 /*------manage image------*/
 
-.row_img{
-	display: -ms-flexbox;
+
+.img_container{
 	display: flex;
-	-ms-flex-wrap: wrap;
-	flex-wrap: wrap;
-	padding: 0 4px;
+	flex-direction: column;
+	margin-top: 25px;
+	width: 70%;
 }
 
-.column_img{
-	-ms-flex: 33%;
-	flex: 33%;
-	max-width:  33%;
-	padding: 0 4px;
-}
-
-.column_img img{
-	margin-top: 8px;
-	vertical-align: middle;
+.img_container img{
 	width: 100%;
+	height: auto;
 }
 
-@media screen and (max-width: 600px){
-	.column_img{
-		-ms-flex: 100%;
-		flex: 100%;
-		max-width: 100%;
-	}
+.img_container .imgaction{
+	display: flex;
+	flex-direction: row;
 }
 
-@media screen and (max-width: 800px){
-	.column_img{
-		-ms-flex: 50%;
-		flex: 50%;
-		max-width: 50%;
-	}
-}
+
+
+
 
 
 /*-------logout---------*/
-.logout{
-	width: 90%;
-	color: #ff4584;
-}
 
-.logout button{
-	width: 100px;
-	height: 50px;
-	display:inline-block;
-	float: left;
-	margin-left: 330px;
-	padding:10px 20px;
-	background-color: #ff4584;
-	font-size:17px;
-	border:none;
-	border-radius:5px;
-	color:white;
-	cursor:pointer;
-}
-
-.logout button:hover{
-	background-color: #7762aa;
-}

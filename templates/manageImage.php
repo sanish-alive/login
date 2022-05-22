@@ -1,5 +1,77 @@
 <?php
+
+require $_SERVER['DOCUMENT_ROOT']."/login/db_base/connect-db.php";
+
+require_once  $_SERVER['DOCUMENT_ROOT']."/login/db_base/insertData.php";
+require_once  $_SERVER['DOCUMENT_ROOT']."/login/db_base/extractData.php";
 require "profile.php";
+
+$imginvalid = "";
+$user_email = $_SESSION['email'];
+$user_id = $_SESSION['userid'];
+
+$a = new ExtractData();
+
+if($_SERVER['REQUEST_METHOD']=="POST"){
+
+	if(isset($_POST['delete'])){
+
+		$imageno = $_POST['imageno'];
+		$imagename = $_POST['imagename'];
+		$query = "UPDATE user_img SET $imageno = '0' WHERE userid = '$user_id' ";
+		if(mysqli_query($conn, $query) && unlink($_SERVER['DOCUMENT_ROOT']."/login/images/".$imagename)){
+			;
+			header("location: manageImage.php");
+		}
+
+	}
+
+	if(isset($_POST['submit'])){		
+
+		if($_FILES['file']['name']!=""){
+			$temp = explode(".", $_FILES["file"]["name"]);
+			$newFileName =  round(microtime(true)).".".end($temp);
+			$fileType = end($temp);
+
+			$allowTypes = array('jpg','png','jpeg');
+
+			if(in_array($fileType, $allowTypes)){
+				if(move_uploaded_file($_FILES['file']['tmp_name'], "../images/".$newFileName)){
+
+
+					for($i=1;$i<6;$i++){
+						$dbimagename = "image".$i;
+						$dbimagename = strval($dbimagename);
+
+						$data = $a->extImages($user_id); 
+
+						if($data[$dbimagename]=='0'){
+							$query = "UPDATE user_img SET $dbimagename='$newFileName' WHERE userid = '$user_id'";
+							if(mysqli_query($conn, $query)){
+								header("location: manageImage.php");
+								break;
+							}
+						}
+
+
+					}
+				}else{
+					$imginvalid = "error on uploading";
+				}
+
+			}else{
+				$imginvalid = "only allows jpg, png, jpeg";
+			}
+
+		}else{
+			$imginvalid = "please select image to upload";
+		}
+	}
+}
+
+
+
+
 ?>
 
 
@@ -7,32 +79,46 @@ require "profile.php";
 	<div class="manage_img">
 		<h1>My Images</h1><hr>
 
-		<div class="row_img">
-			<div class="column_img">
-				<img src="https://www.w3schools.com/w3images/wedding.jpg">
-				<img src="https://www.w3schools.com/w3images/rocks.jpg">
-				<img src="https://www.w3schools.com/w3images/falls2.jpg">
-				<img src="https://www.w3schools.com/w3images/paris.jpg">
-				<img src="https://www.w3schools.com/w3images/nature.jpg">
-			</div>
-			<div class="column_img">
-				<img src="https://www.w3schools.com/w3images/wedding.jpg">
-				<img src="https://www.w3schools.com/w3images/falls2.jpg">
-				<img src="https://www.w3schools.com/w3images/rocks.jpg">
-				<img src="https://www.w3schools.com/w3images/paris.jpg">
-				<img src="https://www.w3schools.com/w3images/nature.jpg">
-			</div>
-			<div class="column_img">
-				<img src="https://www.w3schools.com/w3images/wedding.jpg">
-				<img src="https://www.w3schools.com/w3images/nature.jpg">
-				<img src="https://www.w3schools.com/w3images/rocks.jpg">
-				<img src="https://www.w3schools.com/w3images/falls2.jpg">
-				<img src="https://www.w3schools.com/w3images/paris.jpg">
-				
-			</div>
-		</div>
+		<form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
+			<p style="color: #ff4584;">Upload image <span style="color: red;">: <?php echo $imginvalid; ?></span></p>
+			<input style="background-color: #ff4584; color:white; border:none; border-radius: 5px; padding: 10px 20px;" type="file" name="file" >
+			<input style="background-color: #ff4584; color:white; border:none; border-radius: 5px; padding: 10px 20px;" type="submit" name="submit" value="upload">
+			
+		</form>
+
+		<?php
+
+		for($i=1;$i<6;$i++){
+			$dbimagename = "image".$i;
+			$dbimagename = strval($dbimagename);
+
+			$data = $a->extImages($user_id);
+
+			if($data[$dbimagename]!='0'){
+
+		?>
+		
+				<div class="img_container">
+					<img src='<?php echo "../images/".$data[$dbimagename] ?>'>
+					<div style="width: 100%" class="imgaction">
+						<form style="width: 100%" action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+							<input type="hidden" name="imagename" value="<?php echo $data[$dbimagename]; ?>">
+							<input type="hidden" name="imageno" value="<?php echo $dbimagename; ?>">
+							<input style="width: 100%; background-color: #ff4584; color:white; border:none; border-radius: 5px; padding: 5px;" type="submit" name="delete" value="Delete">
+						</form>
+					</div>
+				</div>
+
+		<?php
+			}
+		}
+		?>
+
+			
 	</div>
 </article>
 </section>
+
+
 </body>
 </html>

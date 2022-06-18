@@ -142,7 +142,7 @@ article{
 .card{
 	margin-top: 10px;
 	vertical-align: middle;
-	width: 95%;
+	width: 65%;
 	display: inline-block;
 	transition: 0.3;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2);
@@ -164,6 +164,7 @@ article{
 	width: 90%;
 	color: #7762aa;
 }
+
 
 .edit_profile img{
 	width: 200px;
@@ -190,7 +191,7 @@ article{
 
 .edit_profile input, textarea{
 	width: 80%;
-	height: 30px;
+	height: 40px;
 }
 
 .edit_profile  textarea{

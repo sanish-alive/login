@@ -1,5 +1,10 @@
 <?php
+require_once  $_SERVER['DOCUMENT_ROOT']."/login/db_base/extractData.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/login/db_base/connect-db.php";
 require "profile.php";
+
+
+
 ?>
 
 <article>
@@ -7,46 +12,39 @@ require "profile.php";
 		<h1>My Match</h1>
 		<hr>
 		<table>
-			<tr>
-				<td><a href="google.com">
-					<div class="card">
-						<img src="R.jpg" style="width:100%">
-						<div class="cardContainer">
-							<h2>panda thapa</h2>
-							<p>hello my name is panertwertwertwertwertwklsdfj laksdjlaksdjf lasdkjf ljdf ksjf lskfj salkdfj safj;slakjf salkdfj; sajf;lsajf; safls lsjf sjjf;lasj fs fjs flsjfl fjs ertwertwertda</p>
+
+			<?php
+			$a = new ExtractData();
+			$retval = $a->extMyMatch($_SESSION['userid']);
+			$data = mysqli_num_rows($retval);
+
+			if($data>0){
+				while($row=mysqli_fetch_array($retval)){
+					#print_r($row);
+					if($row['user1']!=$_SESSION['userid']){
+						$matchid = $row['user1'];
+					}else{
+						$matchid = $row['user2'];
+					}
+					$matchinfo = $a->extMatchId($matchid);
+
+				?>	<tr><td>
+					<a href="userinfo.php?matchid=<?php echo $matchid; ?>">
+						<div class="card">
+							<img src="../uploads/<?php echo $matchinfo['profileImg']; ?>" style="width:100%">
+							<div class="cardContainer">
+								<h2><?php echo $matchinfo['firstname']." ".$matchinfo['lastname']; ?></h2>
+								<p><b>Age: </b><?php echo $matchinfo['age']; ?></p>
+								<p><b>Height: </b><?php echo $matchinfo['height']; ?></p>
+								<p><b>Email: </b><?php echo $matchinfo['email']; ?></p>
+								<p><?php echo $matchinfo['bio']; ?></p>
+							</div>
 						</div>
-					</div>
-				</td></a>
-				<td>
-					<div class="card">
-						<img src="R.jpg" style="width:100%">
-						<div class="cardContainer">
-							<h2>panda thapa</h2>
-							<p>hello my name is panda</p>
-						</div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<div class="card">
-						<img src="R.jpg" style="width:100%">
-						<div class="cardContainer">
-							<h2>panda thapa</h2>
-							<p>hello my name is panda</p>
-						</div>
-					</div>
-				</td>
-				<td>
-					<div class="card">
-						<img src="R.jpg" style="width:100%">
-						<div class="cardContainer">
-							<h2>panda thapa</h2>
-							<p>hello my name is panda</p>
-						</div>
-					</div>
-				</td>
-			</tr>
+					</a></td></tr>
+
+				<?php
+				}
+			}?>
 		</table>
 	</div>
 </article>

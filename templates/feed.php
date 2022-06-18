@@ -11,7 +11,6 @@ if(!isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']!="true" && !isset($_CO
 }
 
 
-echo $_SESSION['loggedIn'];
 
 
 if($_SESSION['gender']=='Male'){
@@ -29,6 +28,7 @@ $alreayvisited = $av['alreadyvisited'];
 $alreayvisited = (int) $alreayvisited;
 $_SESSION['alreadyvisited'] = $alreayvisited; 
 
+$age = $_SESSION['age'];
 
 
 ?>
@@ -45,24 +45,27 @@ $_SESSION['alreadyvisited'] = $alreayvisited;
 
 <div class="navbar">
 		<a id="navlogo" href="">Cupid</a>
-		<a href="feed.php">Feed</a>
+		<a href="myMatch.php">My Match</a>
 		<a href="myProfile.php">Profile</a>
+		<a href="feed.php">Feed</a>
 </div>
 
 
 <div class="usercontainer">
 	<?php
 
-	for($i=0;$i<10;$i++){
+	for($i=0;$i<20;$i++){
 		$alreayvisited++;
 
-		$row = $a->extFeed($opgender, $alreayvisited);#mysqli_fetch_array($data);
+		$row = $a->extFeed($opgender, $alreayvisited, $age);
+		#mysqli_fetch_array($data);
 		if(isset($row)){
 			if($row['gender']==$opgender){
 
+
 	?>
 			
-				<a href="#"><div class = "userprofile">
+				<a href="userinfo.php?matchid=<?php echo $row['userid']; ?>"><div class = "userprofile">
 					<div class=usercard>
 						<img src="R.jpg">
 						<div class="infocontainer">
@@ -77,35 +80,40 @@ $_SESSION['alreadyvisited'] = $alreayvisited;
 				</div>
 
 				<?php
-					$updatevisited = $row['userid'];
+				$updatevisited = $row['userid'];
 
-					}else{
-					$i--;
-					}
-				}else{
-					echo "not found";
-				}
+			}else{
+				$i--;
+			}
+		}
 
 	}
-
-	echo $_SESSION['email'].$updatevisited;
-	$b = new InsertData();
-
-	if(isset($updatevisited)){
-		$b->insertAlreadyVisited($_SESSION['email'], $updatevisited);
-		echo "<center><a style='text-decoration: none; color: white; background-color: rgb(255, 69, 132, 1); padding: 10px 40px; border-radius:5px' id='nextfeed' href='".htmlspecialchars($_SERVER['PHP_SELF'])."'>Next</a><center>";
-	}else{
-		echo "<center><h1>Try Next Time</h1></center>";
-		$b->insertAlreadyVisited($_SESSION['email'], 0);#delete this
-	}
-
-		
-	
 
 
 	?>	
 
 </div>
+
+<center>
+<div style="margin-top: 20px; margin-bottom: 20px;">
+
+	<?php
+
+	$b = new InsertData();
+
+
+		if(isset($updatevisited)){
+			$b->insertAlreadyVisited($_SESSION['email'], $updatevisited);
+			echo "<a style='text-decoration: none; color: white; background-color: rgb(255, 69, 132, 1); padding: 10px 40px; border-radius:5px' id='nextfeed' href='".htmlspecialchars($_SERVER['PHP_SELF'])."'>Next</a>";
+		}else{
+			echo "<h1>Try Next Time</h1>";
+			$b->insertAlreadyVisited($_SESSION['email'], 0);#delete this
+		}
+
+	?>
+</div>
+</center>
+
 
 <script>
 	function userliked(likedid){

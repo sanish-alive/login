@@ -16,7 +16,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
 		$pinvalid = "";
 
 		if($npwd==$cpwd){
-
+			$pwd = md5($pwd);
 			$a = new UserAuthentication();
 			if($a->loginAuth($email, $pwd)){
 				$b = new InsertData();

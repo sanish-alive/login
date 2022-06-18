@@ -21,8 +21,9 @@ echo $_SESSION['loggedIn'];
 	<!-- navigation bar -->
 	<div class="navbar">
 		<a id="navlogo" href="">Cupid</a>
-		<a href="feed.php">Feed</a>
+		<a href="myMatch.php">My Match</a>
 		<a href="myProfile.php">Profile</a>
+		<a href="feed.php">Feed</a>
 	</div>
 
 	<section>

@@ -14,6 +14,12 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 		$height=$_POST["height"];
 		$age=$_POST["age"];
 		$bio=$_POST["bio"];
+
+
+		$temp = explode(".", $_FILES["file"]["name"]);
+		$newfilename = round(microtime(true)).".".end($temp);
+		$fileType = end($temp);
+		$allowTypes = array('jpg','png','jpeg');
 		$error = 0;
 
 
@@ -58,21 +64,43 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 		}
 
 
+		if(in_array($fileType, $allowTypes)){
+			if(!move_uploaded_file($_FILES["file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT']."/login/uploads/" . $newfilename)){
+				$error = 1;
+			}
+		}else{
+			$error = 1;
+		}
+
+
+
+
+
+
+
+
 		if($error==0){
-		$temp = explode(".", $_FILES["file"]["name"]);
-		$newfilename = round(microtime(true)).".".end($temp);
-		move_uploaded_file($_FILES["file"]["tmp_name"], "../uploads/" . $newfilename);
 
-		$b = new InsertData();
+			/*$temp = explode(".", $_FILES["file"]["name"]);
+			$newfilename = round(microtime(true)).".".end($temp);
+			move_uploaded_file($_FILES["file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT']."/login/uploads/" . $newfilename);*/
 
-		if($b->insertRegisration($firstname, $lastname, $email, $pwd, $gender, $age, $height, $bio, $newfilename)){
-			header("location: ../index.php");
-		}
-		else{
-			echo "account not created";
-		}
+			$pwd = md5($pwd);
 
-		mysqli_close($conn);
+			$b = new InsertData();
+
+			if($b->insertRegisration($firstname, $lastname, $email, $pwd, $gender, $age, $height, $bio, $newfilename)){
+				$c = new ExtractData();
+				$userid = $c->extUserId($email);
+				$insert_img_query = "INSERT INTO user_img(userid, email, image1, image2, image3, image4, image5) VALUES ('$userid', '$email', '0', '0','0', '0', '0')";
+				mysqli_query($conn, $insert_img_query);
+				header("location: ../index.php");
+			}
+			else{
+				echo "account not created";
+			}
+
+			mysqli_close($conn);
 		}
 
 

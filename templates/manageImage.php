@@ -10,7 +10,7 @@ $imginvalid = "";
 $user_email = $_SESSION['email'];
 $user_id = $_SESSION['userid'];
 
-$a = new ExtractData();
+$a=new ExtractData();
 
 if($_SERVER['REQUEST_METHOD']=="POST"){
 
@@ -87,7 +87,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
 		</form>
 
 		<?php
-
+		
 		for($i=1;$i<6;$i++){
 			$dbimagename = "image".$i;
 			$dbimagename = strval($dbimagename);

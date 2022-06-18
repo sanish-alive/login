@@ -49,7 +49,8 @@ if(isset($_COOKIE['auth']) && $_COOKIE['auth']=="true" && isset($_COOKIE['email'
 if($_SERVER["REQUEST_METHOD"]=="POST"){
 	if(isset($_POST['submit'])){
 		$email = $_POST['email'];
-		$pwd = $_POST['pass'];
+		$pass = $_POST['pass'];
+		$pwd = md5($pass);
 		$a = new UserAuthentication();
 		if($a->loginAuth($email, $pwd)){
 			$f = new InsertData();
@@ -119,11 +120,11 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 					</div>
 					<div class="inputBx">
 						<span>Password</span>
-						<input type="password" name="pass">
+						<div style="display: flex;">
+							<input type="password" name="pass" id="pwd"><p id="eye" style="margin-left: -2em;margin-top: 1em;" onclick="return passhow()" class="fa fa-fw fa-eye"></p>
+						</div>
 					</div>
-					<div class="remember">
-						<label><input type="checkbox" name="remember"> Remember me</label>
-					</div>
+					
 					<div class="inputBx">
 						<input type="submit" value="Sign In" name="submit">
 					</div>
@@ -141,6 +142,20 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 		</div>
 		
 	</section>
+
+
+<script>
+	function passhow(){
+		var input = document.getElementById("pwd");
+		if(input.type == "password"){
+			input.type = "text";
+			document.getElementById("eye").className = "fa fa-fw fa-eye-slash";
+		}else{
+			input.type = "password";
+			document.getElementById("eye").className = "fa fa-fw fa-eye";
+		}
+	}
+</script>
 
 </body>
 </html>

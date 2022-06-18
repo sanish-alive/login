@@ -107,12 +107,15 @@ class ExtractData{
 	}
 
 
-	function extFeed($opgender, $wantvisit){
+	function extFeed($opgender, $wantvisit, $age){
 		/* this function is provided to show in feed section*/
 
 		global $conn;
 
-		$query = "SELECT firstname, lastname, age, gender, height, bio, userid FROM user_tb WHERE gender='$opgender' AND userid='$wantvisit'";
+		$min_age = $age - 5;
+		$max_age = $age + 5;
+
+		$query = "SELECT firstname, lastname, age, gender, height, bio, userid FROM user_tb WHERE gender='$opgender' AND userid='$wantvisit' AND age BETWEEN $min_age AND $max_age";
 
 
 		$retval = mysqli_query($conn, $query);
@@ -122,6 +125,32 @@ class ExtractData{
 		return $data;
 
 	}
+
+
+	function extMyMatch($userid){
+		global $conn;
+
+		$query = "SELECT * FROM user_match WHERE (user1='$userid' OR user2='$userid') AND matches = 'matched'";
+
+		$retval = mysqli_query($conn, $query);
+
+		#$data = mysqli_fetch_array($retval);
+
+		return $retval;
+
+	}
+
+	function extMatchId($matchid){
+		/* this function all data stored in database*/
+
+		global $conn;
+
+		$query = "SELECT * FROM user_tb WHERE userid='$matchid'";
+		$retval = mysqli_query($conn, $query);
+		$data = mysqli_fetch_array($retval);
+		return $data;
+	}
+
 
 }
 

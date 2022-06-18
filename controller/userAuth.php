@@ -32,6 +32,23 @@ class UserAuthentication{
 		return false;
 		
 	}
+
+
+	function adminAuth($email, $pwd){
+
+		global $conn;
+
+		$query = "select * from admin_tb where email='$email' AND pwd='$pwd'";
+
+		$retval = mysqli_query($conn, $query);
+
+		$data = mysqli_fetch_array($retval);
+
+		if($data['email']==$email && $data['pwd']==$pwd){
+			return true;
+		}
+		return false;
+	}
 }
 
 

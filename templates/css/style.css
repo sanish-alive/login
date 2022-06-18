@@ -95,7 +95,7 @@ section .contentBx .formBx .inputBx span{
 
 section .contentBx .formBx .inputBx input{
 	width: 100%;
-	padding: 10px 20px;
+	padding: 10px 33px;
 	outline: none;
 	font-weight: 400;
 	border: 1px solid white;

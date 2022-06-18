@@ -11,6 +11,7 @@ $einvalid = "";
 $pinvalid = "";
 $ginvalid = "";
 $hinvalid = "";
+$imginvalid = "";
 
 if($_SERVER["REQUEST_METHOD"]=="POST"){
 	if(isset($_POST['submit'])){
@@ -81,14 +82,50 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 		}
 
 	}
+
+	if(isset($_POST['update_img'])){
+		$temp = explode(".", $_FILES["file"]["name"]);
+		$newFileName =  round(microtime(true)).".".end($temp);
+		$fileType = end($temp);
+
+		$allowTypes = array('jpg','png','jpeg');
+
+		if(in_array($fileType, $allowTypes)){
+			if(move_uploaded_file($_FILES['file']['tmp_name'], "../uploads/".$newFileName)){
+				$email = $_SESSION['email'];
+				$update_query = "UPDATE user_tb SET profileImg = '$newFileName' WHERE email='$email'";
+
+				try{
+					unlink($_SERVER['DOCUMENT_ROOT']."/login/uploads/".$_SESSION['profileImg']);
+				}catch(Expection $e){
+					echo 'error';
+
+				}
+				
+				if(mysqli_query($conn, $update_query)){
+					$_SESSION['profileImg']=$newFileName;
+					header("location: myProfile.php");
+				
+				}else{
+					$imginvalid="invalid to upload";
+				}
+			}
+		}
+	}
 }
 ?>
 
 <article>
 	<div class="edit_profile">
 		<h1>Edit Profile</h1>
+
 		<img id="editimg" src="../uploads/<?php echo $_SESSION['profileImg']; ?>" alt="Avatar"><br>
-		<button style="color: #ff4584">Change profile picture</button>
+		<p style="color: #ff4584;">Update Profile Image <span style="color: red;">: <?php echo $imginvalid; ?></span></p>
+		<form style="display: flex" action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
+			
+			<input  style="margin-right: 20px;background-color: #ff4584; color:white; border:none; border-radius: 5px; padding: 10px 20px 40px;" type="file" name="file">
+			<input style="background-color: #ff4584; color:white; border:none; border-radius: 5px; padding: 10px 20px;" type="submit" name="update_img" value="Update">
+		</form>
 		<form action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
 			<table>
 				<tr>

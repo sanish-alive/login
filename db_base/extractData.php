@@ -115,7 +115,7 @@ class ExtractData{
 		$min_age = $age - 5;
 		$max_age = $age + 5;
 
-		$query = "SELECT firstname, lastname, age, gender, height, bio, userid FROM user_tb WHERE gender='$opgender' AND userid='$wantvisit' AND age BETWEEN $min_age AND $max_age";
+		$query = "SELECT firstname, lastname, age, gender, height, bio, userid, profileImg FROM user_tb WHERE gender='$opgender' AND userid='$wantvisit' AND age BETWEEN $min_age AND $max_age";
 
 
 		$retval = mysqli_query($conn, $query);

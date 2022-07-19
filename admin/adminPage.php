@@ -3,8 +3,7 @@
 session_start();
 
 
-if(!isset($_SESSION['adminAuth']) && $_SESSION['admin
-	']!="true" ){
+if(!isset($_SESSION['adminAuth']) && $_SESSION['admin']!="true" && !isset($_COOKIE['authAdmin']) && $_COOKIE['authAdmin']!="true"){
 	header("location: index.php");
 }
 
@@ -23,14 +22,14 @@ $data = mysqli_num_rows($retval);
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="styleadmin.css">
+	<link rel="stylesheet" type="text/css" href="adminstyle.css">
 	<title>Admin</title>
 </head>
 <body>
 
 <div class="navbar">
 	<a id="navlogo" href="">Cupid</a>
-	<a href="adminLogout.php">Logout</a>
+	<a href="adminlogout.php?logout='1'">Logout</a>
 	<a href="adminPage.php">Home</a>
 </div>
 
@@ -40,6 +39,7 @@ $data = mysqli_num_rows($retval);
 	
 		<table>
 			<tr>
+				<th>S.N</th>
 				<th>User Id</th>
 				<th>First Name</th>
 				<th>Last Name</th>
@@ -48,14 +48,16 @@ $data = mysqli_num_rows($retval);
 				<th>Height</th>
 				<th>Age</th>
 				<th>bio</th>
-				<!--<th>Edit</th>-->
+				<th>View</th>
 				<th>Delete</th>
 			</tr>
 
 			<?php
 			if($data>0){
+				$i = 1;
 				while($row=mysqli_fetch_array($retval)) {
 					echo "<tr>";
+					echo "<td>".$i."</td>";
 					echo "<td>".$row['userid']."</td>";
 					echo "<td>".$row['firstname']."</td>";
 					echo "<td>".$row['lastname']."</td>";
@@ -64,9 +66,10 @@ $data = mysqli_num_rows($retval);
 					echo "<td>".$row['height']."</td>";
 					echo "<td>".$row['age']."</td>";
 					echo "<td>".$row['bio']."</td>";
-					#echo "<td><a href='edit.php?userid=".$row['userid']."'>Edit</a></td>";
+					echo "<td><a href='view.php?userid=".$row['userid']."'>View</a></td>";
 					echo "<td><a href='delete.php?userid=".$row['userid']."'>Delete</a></td>";
 					echo "</tr>";
+					$i+=1;
 
 				}
 			}

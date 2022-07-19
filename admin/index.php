@@ -3,7 +3,9 @@ session_start();
 
 require_once $_SERVER['DOCUMENT_ROOT']."/login/controller/userAuth.php";
 
-
+if(isset($_SESSION['adminAuth']) && $_SESSION['admin']="true" && isset($_COOKIE['authAdmin']) && $_COOKIE['authAdmin']=="true"){
+	header("location: adminPage.php");
+}
 
 if($_SERVER['REQUEST_METHOD']=="POST"){
 	if(isset($_POST['submit'])){

@@ -21,7 +21,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
 			if($a->loginAuth($email, $pwd)){
 				$b = new InsertData();
 
-				if($b->insertPassword($email, $npwd)){
+				if($b->insertPassword($email, md5($npwd))){
 					session_destroy();
 					session_destroy();
 					setcookie("auth", null, time()-86400, "/login", "");

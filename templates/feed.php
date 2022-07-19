@@ -38,6 +38,7 @@ $age = $_SESSION['age'];
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="js/jquery.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/feedstyle.css">
 	<title>Feed</title>
 </head>
@@ -45,6 +46,7 @@ $age = $_SESSION['age'];
 
 <div class="navbar">
 		<a id="navlogo" href="">Cupid</a>
+		<a href="logout.php">Logout</a>
 		<a href="myMatch.php">My Match</a>
 		<a href="myProfile.php">Profile</a>
 		<a href="feed.php">Feed</a>
@@ -61,20 +63,19 @@ $age = $_SESSION['age'];
 		#mysqli_fetch_array($data);
 		if(isset($row)){
 			if($row['gender']==$opgender){
-
-
 	?>
 			
 				<a href="userinfo.php?matchid=<?php echo $row['userid']; ?>"><div class = "userprofile">
+	
 					<div class=usercard>
-						<img src="R.jpg">
+						<img src="../uploads/<?php echo $row['profileImg'] ?>">
 						<div class="infocontainer">
 							<p><b>Name: </b><?php echo $row['firstname']." ".$row['lastname']; ?></p>
 							<p><b>Age: </b><?php echo $row['age']; ?></p>
 							<p><b>Height: </b><?php echo $row['height']; ?></p>
 							<p><?php echo $row['bio']; ?></p></a>
 
-							<center><button id='<?php echo $i ?>' onclick = "userliked('<?php echo $row['userid']; ?>')">	&#9829;</button><center>
+							<center><button id='<?php echo $i ?>' onclick = "userliked('<?php echo $row['userid']; ?>','<?php echo $i ?>')">	&#9829;</button><center>
 						</div>
 					</div>
 				</div>
@@ -116,12 +117,26 @@ $age = $_SESSION['age'];
 
 
 <script>
-	function userliked(likedid){
+	function userliked(likedid, iduser){
+		document.getElementById(iduser).style.color = '#ff4584';
+		document.getElementById(iduser).style.backgroundColor = '#7762aa';
 		var xhttp = new XMLHttpRequest();
 		xhttp.open("GET", "feedmatcher.php?matchid="+likedid, true);
 		xhttp.send("matchid="+likedid);
+
 		
+
 	}
+
+	
+
+	
+		
+
+		
+
+
+	
 </script>
 
 </body>

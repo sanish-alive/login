@@ -9,7 +9,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
 	if(isset($_POST['submit']) && isset($_POST['delete'])){
 
 		$email = $_SESSION['email'];
-		$pwd = $_POST['delete'];
+		$pwd = md5($_POST['delete']);
 		$a = new UserAuthentication();
 		if($a->loginAuth($email, $pwd)){
 

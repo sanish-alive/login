@@ -82,7 +82,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
 		<form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
 			<p style="color: #ff4584;">Upload image <span style="color: red;">: <?php echo $imginvalid; ?></span></p>
 			<input style="background-color: #ff4584; color:white; border:none; border-radius: 5px; padding: 10px 20px;" type="file" name="file" >
-			<input style="background-color: #ff4584; color:white; border:none; border-radius: 5px; padding: 10px 20px;" type="submit" name="submit" value="upload">
+			<input id="manageUpImg" type="submit" name="submit" value="upload">
 			
 		</form>
 
@@ -104,7 +104,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
 						<form style="width: 100%" action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
 							<input type="hidden" name="imagename" value="<?php echo $data[$dbimagename]; ?>">
 							<input type="hidden" name="imageno" value="<?php echo $dbimagename; ?>">
-							<input style="width: 100%; background-color: #ff4584; color:white; border:none; border-radius: 5px; padding: 5px;" type="submit" name="delete" value="Delete">
+							<input id="manageDelImg" type="submit" name="delete" value="Delete">
 						</form>
 					</div>
 				</div>

@@ -48,6 +48,7 @@ $data = mysqli_num_rows($retval);
 				<th>Height</th>
 				<th>Age</th>
 				<th>bio</th>
+				<th>block</th>
 				<th>View</th>
 				<th>Delete</th>
 			</tr>
@@ -56,6 +57,11 @@ $data = mysqli_num_rows($retval);
 			if($data>0){
 				$i = 1;
 				while($row=mysqli_fetch_array($retval)) {
+					if($row['block']=='blocked'){
+						$blk = "blocked";
+					}else{
+						$blk = "block";
+					}
 					echo "<tr>";
 					echo "<td>".$i."</td>";
 					echo "<td>".$row['userid']."</td>";
@@ -66,6 +72,7 @@ $data = mysqli_num_rows($retval);
 					echo "<td>".$row['height']."</td>";
 					echo "<td>".$row['age']."</td>";
 					echo "<td>".$row['bio']."</td>";
+					echo "<td><a href='adminblock.php?userid=".$row['userid']."'>".$blk."</a></td>";
 					echo "<td><a href='view.php?userid=".$row['userid']."'>View</a></td>";
 					echo "<td><a href='delete.php?userid=".$row['userid']."'>Delete</a></td>";
 					echo "</tr>";

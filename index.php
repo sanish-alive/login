@@ -8,6 +8,7 @@ session_start();
 
 
 if(isset($_COOKIE['auth']) && $_COOKIE['auth']=="true" && isset($_COOKIE['email']) && $_COOKIE['oldSession']){
+
 	$old_session_id = $_COOKIE['oldSession'];
 	if($_COOKIE['PHPSESSID'] == $_COOKIE['oldSession']){
 		$email = $_COOKIE['email'];

@@ -11,7 +11,7 @@ class UserAuthentication{
 		$e = new ExtractData();
 		$data = $e->extEmlPwd($email, $pwd);
 		if(isset($data)){
-			if($email==$data['email'] && $pwd==$data['pass']){
+			if($email==$data['email'] && $pwd==$data['pass'] && "blocked"!=$data['block']){
 				return true;
 			}
 		}

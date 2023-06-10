@@ -124,7 +124,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 		<form style="display: flex" action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
 			
 			<input  style="margin-right: 20px;background-color: #ff4584; color:white; border:none; border-radius: 5px; padding: 10px 20px 40px;" type="file" name="file">
-			<input style="background-color: #ff4584; color:white; border:none; border-radius: 5px; padding: 10px 20px;" type="submit" name="update_img" value="Update">
+			<input id="editUpdt" type="submit" name="update_img" value="Update">
 		</form>
 		<form action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
 			<table>

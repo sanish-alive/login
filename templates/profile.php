@@ -14,6 +14,7 @@ echo $_SESSION['loggedIn'];
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="css/profile.css">
+	<link rel="stylesheet" type="text/css" href="css/extraa.css">
 	<title>Profile</title>
 </head>
 <body>

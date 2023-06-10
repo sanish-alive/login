@@ -20,7 +20,7 @@ class InsertData{
 
 		
 
-		$query = "INSERT INTO user_tb (firstname, lastname, email, pass, gender, height, age, bio, profileImg, alreadyvisited) VALUES ('$firstname', '$lastname', '$email', '$pwd', '$gender', '$height', '$age', '$bio', '$newfilename', '0')";
+		$query = "INSERT INTO user_tb (firstname, lastname, email, pass, gender, height, age, bio, profileImg, alreadyvisited, block) VALUES ('$firstname', '$lastname', '$email', '$pwd', '$gender', '$height', '$age', '$bio', '$newfilename', '0','blk')";
 
 		$retval = mysqli_query($conn, $query);
 

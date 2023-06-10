@@ -25,7 +25,7 @@ class ExtractData{
 
 		global $conn;
 
-		$query = "SELECT email, pass FROM user_tb WHERE email='$email' AND pass='$pwd'";
+		$query = "SELECT email, pass, block FROM user_tb WHERE email='$email' AND pass='$pwd'";
 		$retval = mysqli_query($conn, $query);
 		$data = mysqli_fetch_array($retval);
 		return $data;
